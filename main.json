@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "16517210625348931646"
+      "templateHash": "12115067421677351964"
     }
   },
   "parameters": {
@@ -100,7 +100,10 @@
             }
           }
         }
-      }
+      },
+      "dependsOn": [
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName'))]"
+      ]
     }
   ],
   "outputs": {
@@ -109,10 +112,6 @@
       "value": "[tenant().tenantId]"
     },
     "AZURE_RESOURCE_GROUP": {
-      "type": "string",
-      "value": "[parameters('resourceGroupName')]"
-    },
-    "AZURE_REDIS_ENTERPRISE_RESOURCE_GROUP": {
       "type": "string",
       "value": "[parameters('resourceGroupName')]"
     }
