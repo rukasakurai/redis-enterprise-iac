@@ -20,11 +20,3 @@ jobs:
       - name: Compile Bicep to ARM Template
         run: |
           bicep build main.bicep
-
-      - name: Commit ARM Template
-        run: |
-          git config --global user.name 'GitHub Actions'
-          git config --global user.email 'github-actions@github.com'
-          git add main.json
-          git commit -m "Auto-generated ARM template from Bicep file"
-          git push
