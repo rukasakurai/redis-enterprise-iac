@@ -5,20 +5,18 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "12115067421677351964"
+      "templateHash": "7176983128146512863"
     }
   },
   "parameters": {
     "resourceGroupName": {
-      "type": "string",
-      "defaultValue": ""
+      "type": "string"
     },
     "resourceGroupLocation": {
       "type": "string"
     },
     "redisEnterpriseName": {
-      "type": "string",
-      "defaultValue": ""
+      "type": "string"
     },
     "redisEnterpriseLocation": {
       "type": "string",
@@ -57,7 +55,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "671975794568231519"
+              "templateHash": "9575835559640658412"
             }
           },
           "parameters": {
@@ -65,12 +63,7 @@
               "type": "string"
             },
             "location": {
-              "type": "string",
-              "defaultValue": "[resourceGroup().location]"
-            },
-            "tags": {
-              "type": "object",
-              "defaultValue": {}
+              "type": "string"
             },
             "sku": {
               "type": "object",
@@ -86,7 +79,6 @@
               "apiVersion": "2021-03-01",
               "name": "[parameters('name')]",
               "location": "[parameters('location')]",
-              "tags": "[parameters('tags')]",
               "sku": "[parameters('sku')]",
               "properties": {
                 "minimumTlsVersion": "1.2"

@@ -1,12 +1,11 @@
 targetScope = 'subscription'
 
-param resourceGroupName string = ''
+param resourceGroupName string
 param resourceGroupLocation string
 
-param redisEnterpriseName string = ''
+param redisEnterpriseName string
 param redisEnterpriseLocation string = 'South Central US'
 
-// Organize resources in a resource group
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: resourceGroupName
   location: resourceGroupLocation
