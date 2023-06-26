@@ -5,78 +5,49 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "15351936129769973669"
+      "templateHash": "16517210625348931646"
     }
   },
   "parameters": {
-    "environmentName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the the environment which is used to generate a short unique hash used in all resources."
-      },
-      "maxLength": 64,
-      "minLength": 1
-    },
-    "location": {
-      "type": "string",
-      "metadata": {
-        "description": "Primary location for all resources"
-      },
-      "minLength": 1
-    },
     "resourceGroupName": {
       "type": "string",
       "defaultValue": ""
+    },
+    "resourceGroupLocation": {
+      "type": "string"
     },
     "redisEnterpriseName": {
       "type": "string",
       "defaultValue": ""
     },
-    "redisEnterpriseResourceGroupName": {
-      "type": "string",
-      "defaultValue": ""
-    },
-    "redisEnterpriseResourceGroupLocation": {
+    "redisEnterpriseLocation": {
       "type": "string",
       "defaultValue": "South Central US"
-    }
-  },
-  "variables": {
-    "$fxv#0": {
-      "redisEnterprise": "redisent-",
-      "resourcesResourceGroups": "rg-"
-    },
-    "abbrs": "[variables('$fxv#0')]",
-    "resourceToken": "[toLower(uniqueString(subscription().id, parameters('environmentName'), parameters('location')))]",
-    "tags": {
-      "azd-env-name": "[parameters('environmentName')]"
     }
   },
   "resources": [
     {
       "type": "Microsoft.Resources/resourceGroups",
       "apiVersion": "2021-04-01",
-      "name": "[if(not(empty(parameters('resourceGroupName'))), parameters('resourceGroupName'), format('{0}{1}', variables('abbrs').resourcesResourceGroups, parameters('environmentName')))]",
-      "location": "[parameters('location')]",
-      "tags": "[variables('tags')]"
+      "name": "[parameters('resourceGroupName')]",
+      "location": "[parameters('resourceGroupLocation')]"
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
       "name": "redis-enterprise",
-      "resourceGroup": "[if(not(empty(parameters('redisEnterpriseResourceGroupName'))), parameters('redisEnterpriseResourceGroupName'), if(not(empty(parameters('resourceGroupName'))), parameters('resourceGroupName'), format('{0}{1}', variables('abbrs').resourcesResourceGroups, parameters('environmentName'))))]",
+      "resourceGroup": "[parameters('resourceGroupName')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
         },
         "mode": "Incremental",
         "parameters": {
-          "name": "[if(not(empty(parameters('redisEnterpriseName'))), createObject('value', parameters('redisEnterpriseName')), createObject('value', format('{0}{1}', variables('abbrs').redisEnterprise, variables('resourceToken'))))]",
-          "location": {
-            "value": "[parameters('redisEnterpriseResourceGroupLocation')]"
+          "name": {
+            "value": "[parameters('redisEnterpriseName')]"
           },
-          "tags": {
-            "value": "[variables('tags')]"
+          "location": {
+            "value": "[parameters('redisEnterpriseLocation')]"
           }
         },
         "template": {
@@ -129,28 +100,21 @@
             }
           }
         }
-      },
-      "dependsOn": [
-        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', if(not(empty(parameters('resourceGroupName'))), parameters('resourceGroupName'), format('{0}{1}', variables('abbrs').resourcesResourceGroups, parameters('environmentName'))))]"
-      ]
+      }
     }
   ],
   "outputs": {
-    "AZURE_LOCATION": {
-      "type": "string",
-      "value": "[parameters('location')]"
-    },
     "AZURE_TENANT_ID": {
       "type": "string",
       "value": "[tenant().tenantId]"
     },
     "AZURE_RESOURCE_GROUP": {
       "type": "string",
-      "value": "[if(not(empty(parameters('resourceGroupName'))), parameters('resourceGroupName'), format('{0}{1}', variables('abbrs').resourcesResourceGroups, parameters('environmentName')))]"
+      "value": "[parameters('resourceGroupName')]"
     },
     "AZURE_REDIS_ENTERPRISE_RESOURCE_GROUP": {
       "type": "string",
-      "value": "[if(not(empty(parameters('redisEnterpriseResourceGroupName'))), parameters('redisEnterpriseResourceGroupName'), if(not(empty(parameters('resourceGroupName'))), parameters('resourceGroupName'), format('{0}{1}', variables('abbrs').resourcesResourceGroups, parameters('environmentName'))))]"
+      "value": "[parameters('resourceGroupName')]"
     }
   }
 }
