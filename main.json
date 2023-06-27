@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "7176983128146512863"
+      "templateHash": "3860795547667702934"
     }
   },
   "parameters": {
@@ -55,7 +55,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "9575835559640658412"
+              "templateHash": "5779358537708905860"
             }
           },
           "parameters": {
@@ -83,6 +83,28 @@
               "properties": {
                 "minimumTlsVersion": "1.2"
               }
+            },
+            {
+              "type": "Microsoft.Cache/redisEnterprise/databases",
+              "apiVersion": "2022-11-01-preview",
+              "name": "[format('{0}/{1}', parameters('name'), 'default')]",
+              "properties": {
+                "clientProtocol": "Encrypted",
+                "modules": [
+                  {
+                    "name": "RediSearch"
+                  }
+                ],
+                "evictionPolicy": "AllKeysLRU",
+                "clusteringPolicy": "EnterpriseCluster",
+                "persistence": {
+                  "aofEnabled": false,
+                  "rdbEnabled": false
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Cache/redisEnterprise', parameters('name'))]"
+              ]
             }
           ],
           "outputs": {
